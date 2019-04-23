@@ -2,7 +2,7 @@ const { promisify } = require('util');
 const crypto = require('crypto');
 const passport = require('passport');
 const _ = require('lodash');
-const User = require('../models/User');
+const Usuario = require('../models/Usuario');
 
 
 /**
@@ -20,9 +20,12 @@ exports.getCreate = (req, res) => {
  * Read page.
  */
 exports.getRead = (req, res) => {
-    res.render('usuario/read', {
-        title: 'Ver todos os Usuarios'
-    });
+    Usuario.find().then(usrs => {
+        res.render('usuario/read', {
+            title: 'Ver todos os Usuarios',
+            usuarios: usrs
+        });
+    }).catch();
 };
 
 /**
@@ -31,7 +34,7 @@ exports.getRead = (req, res) => {
  */
 exports.getUpdate = (req, res) => {
     res.render('usuario/update', {
-        title: 'Ver todos os Usuários'
+        title: 'Atualizar Pessoa'
     });
 };
 
@@ -77,7 +80,7 @@ exports.postCreate = (req, res, next) => {
         cep: req.body.cep,
     });
 
-    User.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
+    Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
         if (err) { return next(err); }
         if (existingUser) {
             req.flash('errors', { msg: 'Este usuário já existe.' });
@@ -112,8 +115,8 @@ exports.postUpdate = (req, res, next) => {
         return res.redirect('/update'); 
     }
 
-    //User.findById(req.user.id, (err, user) => {
-    User.findOne({ cpf: req.body.cpf }, (err, user) => {
+    //Usuario.findById(req.user.id, (err, user) => {
+    Usuario.findOne({ cpf: req.body.cpf }, (err, user) => {
         if (err) { return next(err); }
         user.nome = req.body.name || '';
         user.telefone = req.body.telefone || '';
@@ -140,7 +143,7 @@ exports.postUpdate = (req, res, next) => {
  * Delete user account.
  */
 exports.postDelete = (req, res, next) => {
-    User.deleteOne({ cpf: req.cpf }, (err) => {
+    Usuario.deleteOne({ cpf: req.cpf }, (err) => {
         if (err) { return next(err); }
         req.flash('info', { msg: 'Usuário removido com sucesso.' });
         res.redirect('/');

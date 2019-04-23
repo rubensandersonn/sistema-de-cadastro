@@ -122,20 +122,21 @@ app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/jquery/dist
 app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free/webfonts'), { maxAge: 31557600000 }));
 
 /**
- * Primary app routes.
+ * Primary app routes.  
  */
 app.get('/', homeController.index);
 
-app.get('/read', usuarioController.getRead);
+app.get('/usuario', usuarioController.getRead);
+app.get('/usuario/read', usuarioController.getRead);
 
-app.get('/create', usuarioController.getCreate);
-app.post('/create', usuarioController.postCreate);
+app.get('/usuario/create', usuarioController.getCreate);
+app.post('/usuario/create', usuarioController.postCreate);
 
-app.get('/update', usuarioController.getUpdate);
-app.post('/update', usuarioController.postUpdate);
+app.get('/usuario/update', usuarioController.getUpdate);
+app.post('/usuario/update', usuarioController.postUpdate);
 
-app.get('/delete', usuarioController.getDelete);
-app.post('/delete', usuarioController.postDelete);
+app.get('/usuario/delete', usuarioController.getDelete);
+app.post('/usuario/delete', usuarioController.postDelete);
 
 
 /**

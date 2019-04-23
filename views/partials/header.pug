@@ -8,6 +8,8 @@
       span.navbar-toggler-icon
     .collapse.navbar-collapse
       ul.nav.navbar-nav
+        li.nav-item(class=(title === 'Home') ? 'active' : undefined)
+          a.nav-link(href='/') Home
         li.nav-item(class=(title === 'Buscar') ? 'active' : undefined)
           a.nav-link(href='/usuario') Buscar
         li.nav-item(class=(title === 'Criar') ? 'active' : undefined)
