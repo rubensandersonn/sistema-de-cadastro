@@ -82,6 +82,10 @@ exports.getSignup = (req, res) => {
  */
 exports.postSignup = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
+  req.assert('telefone', 'Desculpe, o formato do telefone é (dd) 9dddddddd ou (dd) dddddddd').matches(/^\(?\d{2}\)?[ ]?9\d{4} ?\d{4}$|^\(?\d{2}\)? ?\9 \d{4} ?\d{4}$/);
+  req.assert('nascimento', 'Desculpe, o formato da data de nascimento é dd/mm/aaaa, antes de hoje e após 1900').matches(/^(0(?=\d)|1(?=\d)|2(?=\d)|3(?=[01]))\d\/(0(?=[1-9])|1(?=[0-2]))\d\/(19\d{2}|20(?=[01]\d)\d\d)$/);
+  req.assert('rg', 'Desculpe, o formato do RG é dddddddddd-d').matches(/^\d{10}-\d$/);
+  req.assert('cpf', 'Desculpe, o formato do CPF é ddd.ddd.ddd-dd ou ddddddddddd ou ddddddddd-dd').matches(/^(\d{11}|\d{9}-\d{2}|\d{3}\.\d{3}\.\d{3}-\d{2})$/);
   req.assert('password', 'Password must be at least 4 characters long').len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
   req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
@@ -145,6 +149,15 @@ exports.postUpdateProfile = (req, res, next) => {
     if (err) { return next(err); }
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
+    user.profile.telefone = req.body.telefone || '';
+    user.profile.telefone = req.body.telefone || '';
+    user.profile.nascimento = req.body.nascimento || '';
+    user.profile.rg = req.body.rg || '';
+    user.profile.cpf = req.body.cpf || '';
+    user.profile.endereco = req.body.endereco || '';
+    user.profile.cidade = req.body.cidade || '';
+    user.profile.estado = req.body.estado || '';
+    user.profile.cep = req.body.cep || '';
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';

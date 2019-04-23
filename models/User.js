@@ -20,10 +20,20 @@ const userSchema = new mongoose.Schema({
 
   profile: {
     name: String,
+
     gender: String,
     location: String,
     website: String,
-    picture: String
+    picture: String,
+
+    tel: String,
+    nascimento: String,
+    rg: String,
+    cpf:String,
+    endereco:String,
+    cidade:String,
+    estado: String,
+    cep: String,
   }
 }, { timestamps: true });
 
