@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
-    h3 Atualizar Usuário
+    h3 Atualizar Cadastro
   form(action='/usuario/update', method='POST', onsubmit="return confirm('Tem certeza que deseja atualizar esta pessoa?');")
     input(type='hidden', name='_csrf', value=_csrf)
     
@@ -11,6 +11,10 @@ block content
       .col-md-7
         input.mb-2.form-control(type='text', name='cpf', id='cpf', placeholder='000.000.000-00', autofocus, autocomplete='cpf', required)
     .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='nome') Novo Nome
+      .col-md-7
+        input.mb-2.form-control(type='text', name='nome', id='nome', placeholder='Nome', autofocus, autocomplete='telefone', required)
+      
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='telefone') Novo Telefone
       .col-md-7
         input.mb-2.form-control(type='text', name='telefone', id='telefone', placeholder='(85) 999999999', autofocus, autocomplete='telefone', required)

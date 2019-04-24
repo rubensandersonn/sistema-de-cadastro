@@ -14,7 +14,6 @@ const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
 const path = require('path');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
@@ -32,11 +31,6 @@ dotenv.config({ path: '.env.example' });
  */
 const homeController = require('./controllers/home');
 const usuarioController = require('./controllers/crudUsuario');
-
-/**
- * API keys and Passport configuration.
- */
-const passportConfig = require('./config/passport');
 
 /**
  * Create Express server. 
@@ -83,8 +77,7 @@ app.use(session({
     autoReconnect: true,
   })
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+
 app.use(flash());
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
@@ -126,7 +119,7 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
  */
 app.get('/', homeController.index);
 
-app.get('/usuario', usuarioController.getRead);
+app.get('/usuario', usuarioController.getRead); 
 app.get('/usuario/read', usuarioController.getRead);
 
 app.get('/usuario/create', usuarioController.getCreate);
@@ -140,7 +133,7 @@ app.post('/usuario/delete', usuarioController.postDelete);
 
 
 /**
- * Error Handler.
+ * Error Handler.  
  */
 if (process.env.NODE_ENV === 'development') {
   // only use in development

@@ -1,8 +1,35 @@
-extends layout
+extends ../layout
 
 block content
     .pb-2.mb-4.border-bottom
-        h3 Listando todos os usuários
-    ul
-        each u in usuarios
-            li=u
+        h3 Listando Pessoas
+    form(action='/usuario/read', method='GET').mb-4
+        input(type='hidden', name='_csrf', value=_csrf)
+        
+        label.border-bottom(for='searchString') #[strong Digite o CPF da pessoa a ser Buscada] (buscar com campo vazio retorna todos)
+        
+            input.mt-2.mb-2.form-control(type='text', name='searchString', id='searchString', placeholder='000.000.000-00', autofocus, autocomplete='cpf')
+        
+        button.btn.ml-2.btn-success(type='submit')
+            i.fas.fa-user-plus.fa-sm
+            | Buscar
+    
+    h4.mb-4.p-2.border-bottom Resultados (#{usuarios.length}):
+    
+    each u in usuarios
+        h4.ml-4.mb-3.pl-3=u.nome
+        
+        .row.mb-4
+                .col.mr-4.border-right
+                p="RG: "+u.rg
+                .col.mr-4.border-right
+                p="CPF: "+u.cpf
+                .col.mr-4.border-right
+                p="tel: "+u.tel
+                .col.mr-4.border-right
+                p="Cidade: "+u.cidade
+                .col.mr-4.border-right
+                p="Estado: "+u.estado
+                .col.mr-4.border-right
+                p="CEP: "+u.cep
+                

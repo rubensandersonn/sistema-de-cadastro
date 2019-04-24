@@ -6,6 +6,10 @@ block content
   form(action='/usuario/create', method='POST', onsubmit="return confirm('Tem certeza que deseja cadastrar esta pessoa?');")
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='nome') Nome
+      .col-md-7
+        input.mb-2.form-control(type='text', name='nome', id='nome', placeholder='Nome', autofocus, autocomplete='nome', required)
+      
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='telefone') Telefone
       .col-md-7
         input.mb-2.form-control(type='text', name='telefone', id='telefone', placeholder='(85) 999999999', autofocus, autocomplete='telefone', required)
