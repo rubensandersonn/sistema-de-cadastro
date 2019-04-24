@@ -43,7 +43,9 @@ const app = express();
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useNewUrlParser', true);
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).catch(function (reason) {
+  console.log('Unable to connect to the mongodb instance. Error: ', reason);
+});
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
@@ -133,7 +135,7 @@ app.post('/usuario/delete', usuarioController.postDelete);
 
 
 /**
- * Error Handler.  
+ * Error Handler. 
  */
 if (process.env.NODE_ENV === 'development') {
   // only use in development

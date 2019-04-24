@@ -24,7 +24,9 @@ exports.getRead = (req, res) => {
                 title: 'Ver todos os Usuarios',
                 usuarios: usrs
             });
-        }).catch();
+        }).catch(err => {
+            console.log('erro ao recuperar os usuarios');
+        });
     }else{
         Usuario.find({cpf:req.query.searchString}).then(usrs => {
             
