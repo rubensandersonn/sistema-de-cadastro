@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Usuario = require('../models/Usuario');
 const cXe = require('../public/estados_cidades.json');
 
@@ -18,18 +17,18 @@ exports.getCreate = (req, res) => {
  * Read page.
  */
 exports.getRead = (req, res) => {
-    if(!req.query.searchString | req.query.searchString === ''){
+    if (!req.query.searchString | req.query.searchString === '') {
         Usuario.find().then(usrs => {
             res.render('usuario/read', {
                 title: 'Ver todos os Usuarios',
                 usuarios: usrs
             });
         }).catch(err => {
-            console.log('erro ao recuperar os usuarios');
+            console.log('erro ao recuperar os usuarios', err);
         });
-    }else{
-        Usuario.find({cpf:req.query.searchString}).then(usrs => {
-            
+    } else {
+        Usuario.find({ cpf: req.query.searchString }).then(usrs => {
+
             res.render('usuario/read', {
                 title: 'Ver Usuario',
                 usuarios: usrs
@@ -90,20 +89,39 @@ exports.postCreate = (req, res, next) => {
         cep: req.body.cep,
     });
 
-    Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
-        if (err) { return next(err); }
-        if (existingUser) {
-            req.flash('errors', { msg: 'Este usuário já existe.' });
-            return res.redirect('create');
-        }
-        user.save((err) => {
-            if (err) { 
-                return next(err); 
+    Usuario.findOne({ cpf: req.body.cpf })
+        .then(existingUser => {
+            if (existingUser) {
+                req.flash('errors', { msg: 'Este usuário já existe.' });
+                return res.redirect('create');
             }
-            req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
-            res.redirect('create');
+        }).catch(err => {
+            user.save()
+                .then(u => {
+                    req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
+                    res.redirect('create');
+                })
+                .catch(err => {
+                    return next(err);
+                });
         });
-    });
+    /**
+     * 
+     Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
+         if (err) { return next(err); }
+         if (existingUser) {
+             req.flash('errors', { msg: 'Este usuário já existe.' });
+             return res.redirect('create');
+            }
+            user.save((err) => {
+                if (err) {
+                    return next(err);
+                }
+                req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
+                res.redirect('create');
+            });
+        });
+    */
 };
 
 
@@ -118,27 +136,49 @@ exports.postUpdate = (req, res, next) => {
 
     if (errors) {
         req.flash('errors', errors);
-        return res.redirect('update'); 
+        return res.redirect('update');
     }
 
-    //Usuario.findById(req.user.id, (err, user) => {
-    Usuario.findOne({ cpf: req.body.cpf }, (err, user) => {
-        if (err) { return next(err); }
+    Usuario.findOne({cpf: req.body.cpf})
+    .then(user => {
         user.tel = req.body.telefone || '';
-        user.nome= req.body.nome.replace(/\b\w/g, l => l.toUpperCase())|| '';
+        user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
         user.endereco = req.body.endereco || '';
         user.cidade = req.body.cidade || '';
         user.estado = req.body.estado || '';
         user.cep = req.body.cep || '';
-       
-        user.save((err) => {
-            if (err) {
-                return next(err);
-            }
+        
+        user.save().then(u => {
             req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
             res.redirect('update');
+        }).catch(err => {
+            return next(err);
         });
+    }).catch(err => {
+        req.flash('errors', { msg: 'Usuário não encontrado.' });
+        res.redirect('update');
     });
+    //Usuario.findById(req.user.id, (err, user) => {
+    /**
+     * 
+     Usuario.findOne({ cpf: req.body.cpf }, (err, user) => {
+         if (err) { return next(err); }
+         user.tel = req.body.telefone || '';
+         user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
+         user.endereco = req.body.endereco || '';
+         user.cidade = req.body.cidade || '';
+         user.estado = req.body.estado || '';
+         user.cep = req.body.cep || '';
+         
+         user.save((err) => {
+             if (err) {
+                 return next(err);
+                }
+                req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
+                res.redirect('update');
+            });
+        });
+    */
 };
 
 /**
@@ -154,11 +194,19 @@ exports.postDelete = (req, res, next) => {
         req.flash('errors', errors);
         return res.redirect('delete');
     }
-
-    Usuario.deleteOne({ cpf: req.body.cpf }, (err) => {
-        if (err) { return next(err); }
+    /**
+     Usuario.deleteOne({ cpf: req.body.cpf }, (err) => {
+     if (err) { return next(err); }
+     req.flash('info', { msg: 'Usuário removido com sucesso.' });
+     res.redirect('delete');
+    });
+    */
+    
+    Usuario.deleteOne({cpf: req.body.cpf}).then(u => {
         req.flash('info', { msg: 'Usuário removido com sucesso.' });
         res.redirect('delete');
+    }).catch(err => {
+        return next(err);
     });
 };
 
