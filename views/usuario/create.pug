@@ -30,17 +30,17 @@ block content
       .col-md-7
         input.mb-2.form-control(type='text', name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', required)
       
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cidade') Cidade
-      .col-md-7
-        input.mb-2.form-control(type='text', name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='cidade', required)
-      
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='estado') Estado
       .col-md-7
-        input.mb-2.form-control(type='text', name='estado', id='estado', placeholder='ex.: CE ou Ceará', autofocus, autocomplete='estado', required)
+        input.mb-2.form-control(type='text', name='estado', id='estado', placeholder='Estado', autofocus, autocomplete='estado', required)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cidade') Cidade
+      .col-md-7
+        input.mb-2.form-control(type='text', name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='estado', required)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='cep') CEP
       .col-md-7
-        input.mb-2.form-control(type='text', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='estado', required)
+        input.mb-2.form-control(type='text', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='cep', required)
     
     .form-group.offset-sm-3.col-md-7.pl-2
       button.btn.btn-success(type='submit')

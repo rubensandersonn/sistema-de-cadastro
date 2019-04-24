@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const Usuario = require('../models/Usuario');
-
+const cXe = require('../public/estados_cidades.json');
 
 /**
  * GET /create
@@ -8,7 +8,8 @@ const Usuario = require('../models/Usuario');
  */
 exports.getCreate = (req, res) => {
     res.render('usuario/create', {
-        title: 'Criar Usuario'
+        title: 'Criar Usuario',
+        cidadesXestados: cXe
     });
 };
 
