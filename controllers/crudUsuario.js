@@ -140,25 +140,25 @@ exports.postUpdate = (req, res, next) => {
         return res.redirect('update');
     }
 
-    Usuario.findOne({cpf: req.body.cpf})
-    .then(user => {
-        user.tel = req.body.telefone || '';
-        user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
-        user.endereco = req.body.endereco || '';
-        user.cidade = req.body.cidade || '';
-        user.estado = req.body.estado || '';
-        user.cep = req.body.cep || '';
-        
-        user.save().then(u => {
-            req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
-            res.redirect('update');
+    Usuario.findOne({ cpf: req.body.cpf })
+        .then(user => {
+            user.tel = req.body.telefone || '';
+            user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
+            user.endereco = req.body.endereco || '';
+            user.cidade = req.body.cidade || '';
+            user.estado = req.body.estado || '';
+            user.cep = req.body.cep || '';
+
+            user.save().then(u => {
+                req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
+                res.redirect('update');
+            }).catch(err => {
+                return next(err);
+            });
         }).catch(err => {
-            return next(err);
+            req.flash('errors', { msg: 'Usuário não encontrado.' });
+            res.redirect('update');
         });
-    }).catch(err => {
-        req.flash('errors', { msg: 'Usuário não encontrado.' });
-        res.redirect('update');
-    });
     //Usuario.findById(req.user.id, (err, user) => {
     /**
      * 
@@ -202,12 +202,11 @@ exports.postDelete = (req, res, next) => {
      res.redirect('delete');
     });
     */
-    
-    Usuario.deleteOne({cpf: req.body.cpf}).then(u => {
-        req.flash('info', { msg: 'Usuário removido com sucesso.' });
+
+    Usuario.deleteOne({ cpf: req.body.cpf }, (err) => {
+        if (err) { return next(err); }
+        req.flash('info', { msg: 'Cadastro deletado.' });
         res.redirect('delete');
-    }).catch(err => {
-        return next(err);
     });
 };
 
