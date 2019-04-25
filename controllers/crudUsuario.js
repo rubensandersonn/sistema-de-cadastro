@@ -97,6 +97,7 @@ exports.postCreate = (req, res, next) => {
                 return res.redirect('create');
             }
         }).catch(err => {
+            console.log('Usuario Novo... vamos inserir')
             user.save()
                 .then(u => {
                     req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
