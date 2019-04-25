@@ -1,14 +1,15 @@
 /**
- * Module dependencies. 
+ * Module dependencies.
  */
 const express = require('express');
+const sass = require('node-sass-middleware'); 
+const lusca = require('lusca'); 
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const chalk = require('chalk');
 const errorHandler = require('errorhandler');
-const lusca = require('lusca');
 const dotenv = require('dotenv');
 const MongoStore = require('connect-mongo')(session);
 const flash = require('express-flash');
@@ -16,7 +17,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-const sass = require('node-sass-middleware');
 const multer = require('multer');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
@@ -38,16 +38,16 @@ const usuarioController = require('./controllers/crudUsuario');
 const app = express();
 
 /** 
- * Connect to MongoDB.
+ * Connect to MongoDB. 
  */
-
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useNewUrlParser', true);
+mongoose.connect(process.env.MONGODB_URI).then(u => {console.log('Banco conectado!')}).catch(err => {console.log('erro ao conectar ao mongodb', err)});
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
   process.exit();
-});
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(res => console.log("Connected to DB")).catch(function (reason) {
-  console.log('Unable to connect to the mongodb instance. Error: ', reason);
 });
 
 /**
@@ -59,7 +59,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
 app.use(compression());
-
+app.use(sass({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public')
+}));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -76,6 +79,8 @@ app.use(session({
 }));
 
 app.use(flash());
+app.use(lusca.xframe('SAMEORIGIN'));
+app.use(lusca.xssProtection(true));
 
 app.use('/', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 app.use('/js/lib', express.static(path.join(__dirname, 'node_modules/chart.js/dist'), { maxAge: 31557600000 }));

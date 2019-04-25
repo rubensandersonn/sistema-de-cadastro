@@ -1,6 +1,6 @@
 const Usuario = require('../models/Usuario');
 const cXe = require('../public/estados_cidades.json');
-
+const cep = require('../public/js/makecep');
 /**
  * GET /create
  * Create page.
@@ -8,7 +8,8 @@ const cXe = require('../public/estados_cidades.json');
 exports.getCreate = (req, res) => {
     res.render('usuario/create', {
         title: 'Criar Usuario',
-        cidadesXestados: cXe
+        cidadesXestados: cXe,
+        cep: cep
     });
 };
 

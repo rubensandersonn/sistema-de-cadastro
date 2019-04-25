@@ -26,9 +26,15 @@ block content
       .col-md-7
         input.mb-2.form-control(type='text', name='cpf', id='cpf', placeholder='000.000.000-00', autofocus, autocomplete='cpf', required)
       
+      -var cu = "";
+
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cep') CEP
+      .col-md-7
+        input.mb-2.form-control(type='text', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='cep', required)
+      
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='endereco') Endereço
       .col-md-7
-        input.mb-2.form-control(type='text', name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', required)
+        input.mb-2.form-control(type='text', name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', value=cu required)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='estado') Estado
       .col-md-7
@@ -37,10 +43,7 @@ block content
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='cidade') Cidade
       .col-md-7
         input.mb-2.form-control(type='text', name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='estado', required)
-      
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cep') CEP
-      .col-md-7
-        input.mb-2.form-control(type='text', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='cep', required)
+        
     
     .form-group.offset-sm-3.col-md-7.pl-2
       button.btn.btn-success(type='submit')
