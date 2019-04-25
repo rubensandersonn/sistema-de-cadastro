@@ -1,6 +1,5 @@
 const Usuario = require('../models/Usuario');
 const cXe = require('../public/estados_cidades.json');
-const cep = require('../public/js/makecep');
 /**
  * GET /create
  * Create page.
@@ -8,8 +7,6 @@ const cep = require('../public/js/makecep');
 exports.getCreate = (req, res) => {
     res.render('usuario/create', {
         title: 'Criar Usuario',
-        cidadesXestados: cXe,
-        cep: cep
     });
 };
 
@@ -90,25 +87,6 @@ exports.postCreate = (req, res, next) => {
         cep: req.body.cep,
     });
 
-    Usuario.findOne({ cpf: req.body.cpf })
-        .then(existingUser => {
-            if (existingUser) {
-                req.flash('errors', { msg: 'Este usuário já existe.' });
-                return res.redirect('create');
-            }
-        }).catch(err => {
-            console.log('Usuario Novo... vamos inserir')
-            user.save()
-                .then(u => {
-                    req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
-                    res.redirect('create');
-                })
-                .catch(err => {
-                    return next(err);
-                });
-        });
-    /**
-     * 
      Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
          if (err) { return next(err); }
          if (existingUser) {
@@ -123,7 +101,6 @@ exports.postCreate = (req, res, next) => {
                 res.redirect('create');
             });
         });
-    */
 };
 
 
