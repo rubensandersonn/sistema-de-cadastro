@@ -8,14 +8,37 @@ html
     meta(name='csrf-token', content=_csrf)
     title #{title} - Rubens - Sistema de Cadastro
     link(rel='shortcut icon', href='/favicon.png')
-    link(rel='stylesheet', href='/css/main.css')
+    //link(rel='stylesheet', href='/css/main.css')
     script(src='/js/lib/Chart.min.js')
+    script(src='/js/cep.js')
+    script(src='/js/jquery-3.3.1.min.js')
+    script(src='/js/jquery-ui.js')
+    script(src='/js/popper.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/owl.carousel.min.js')
+    script(src='/js/jquery.magnific-popup.min.js')
+    script(src='/js/jquery.sticky.js')
+    script(src='/js/jquery.waypoints.min.js')
+    script(src='/js/jquery.animateNumber.min.js')
+    script(src='/js/aos.js')
+    script(src='/js/main.js')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    link(href='https://fonts.googleapis.com/css?family=Nunito:300,400,700', rel='stylesheet')
+    link(rel='stylesheet', href='/fonts/icomoon/style.css')
+    link(rel='stylesheet', href='/css2/bootstrap.min.css')
+    link(rel='stylesheet', href='/css2/magnific-popup.css')
+    link(rel='stylesheet', href='/css2/jquery-ui.css')
+    link(rel='stylesheet', href='/css2/owl.carousel.min.css')
+    link(rel='stylesheet', href='/css2/owl.theme.default.min.css')
+    link(rel='stylesheet', href='/css2/bootstrap-datepicker.css')
+    link(rel='stylesheet', href='/fonts/flaticon/font/flaticon.css')
+    link(rel='stylesheet', href='/css2/aos.css')
+    link(rel='stylesheet', href='/css2/style.css')
 
   body
     include partials/header
 
-
-    .container
+    container
       include partials/flash
       block content
 
@@ -25,7 +48,7 @@ html
     script(src='/js/lib/popper.min.js')
     script(src='/js/lib/bootstrap.min.js')
     script(src='/js/main.js')
-    script(src='../public/makecep.js')
+    
     
 
     // Google Analytics: change UA-XXXXX-X to be your site's ID

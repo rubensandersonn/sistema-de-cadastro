@@ -1,5 +1,4 @@
 const Usuario = require('../models/Usuario');
-const cXe = require('../public/estados_cidades.json');
 /**
  * GET /create
  * Create page.

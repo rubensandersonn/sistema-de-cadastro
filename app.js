@@ -93,6 +93,7 @@ app.use('/webfonts', express.static(path.join(__dirname, 'node_modules/@fortawes
  * Primary app routes.  
  */
 app.get('/', homeController.index);
+app.get('/home2', homeController.secondary);
 
 app.get('/usuario', usuarioController.getRead); 
 app.get('/usuario/read', usuarioController.getRead);

@@ -1,11 +1,12 @@
 extends ../layout
 
 block content
-  
+  .pb-2.mt-2.mb-4.border-bottom
+    h3 |
   .pb-2.mt-2.mb-4.border-bottom 
-    h3 Remover Cadastro
+    h3.pl-4 Remover Cadastro
 
-  form(action='/usuario/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+  form.pl-4(action='/usuario/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
     .form-group
       .form-group.row
         label.col-md-3.col-form-label.font-weight-bold.text-right(for='cpf') Digite o CPF da pessoa a ser removida

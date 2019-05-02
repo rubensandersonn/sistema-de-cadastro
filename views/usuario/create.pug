@@ -2,8 +2,10 @@ extends ../layout
 
 block content
   .pb-2.mt-2.mb-4.border-bottom
-    h3 Criar Cadastro de Pessoa
-  form(action='/usuario/create', method='POST', onsubmit="return confirm('Tem certeza que deseja cadastrar esta pessoa?');")
+    h3 |
+  .pb-2.mt-2.mb-4.border-bottom
+    h3.ml-5 Criar Cadastro de Pessoa
+  form(action='/usuario/create', method='POST', onsubmit="return confirm('Tem certeza que deseja cadastrar esta pessoa?');").mb-4
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='nome') Nome
@@ -26,26 +28,27 @@ block content
       .col-md-7
         input.mb-2.form-control(type='text', name='cpf', id='cpf', placeholder='000.000.000-00', autofocus, autocomplete='cpf', required)
       
-      -var cu = "";
 
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='cep') CEP
       .col-md-7
-        input.mb-2.form-control(type='text', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='cep', required)
+        input.mb-2.form-control(type='text', name='cep', id='cep', onblur='pesquisacep(this.value);', placeholder='ex.: 60.000-000', autofocus, autocomplete='cep', required)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='endereco') Endereço
       .col-md-7
-        input.mb-2.form-control(type='text', name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', value=cu required)
+        input.mb-2.form-control(type='text', name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', value=cu required, readonly)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='estado') Estado
       .col-md-7
-        input.mb-2.form-control(type='text', name='estado', id='estado', placeholder='Estado', autofocus, autocomplete='estado', required)
+        input.mb-2.form-control(type='text', name='estado', id='estado', placeholder='Estado', autofocus, autocomplete='estado', required, readonly)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='cidade') Cidade
       .col-md-7
-        input.mb-2.form-control(type='text', name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='estado', required)
+        input.mb-2.form-control(type='text', name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='estado', required, readonly)
         
     
     .form-group.offset-sm-3.col-md-7.pl-2
       button.btn.btn-success(type='submit')
         i.fas.fa-user-plus.fa-sm
         | Cadastrar
+  
+    
