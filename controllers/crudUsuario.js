@@ -130,7 +130,7 @@ exports.postUpdate = (req, res, next) => {
         .then(user => {
             user.tel = req.body.telefone || '';
             user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
-            endereco: req.body.endereco + ' - no: ' + req.body.numero + c || '';
+            user.endereco = req.body.endereco + ' - no: ' + req.body.numero + c || '';
             user.cidade = req.body.cidade || '';
             user.estado = req.body.estado || '';
             user.cep = req.body.cep || '';

@@ -10,7 +10,7 @@ function limpa_formulário_cep() {
   function meu_callback(conteudo) {
     if (!("erro" in conteudo)) {
       //Atualiza os campos com os valores.
-      document.getElementById('endereco').value = ('Rua '+conteudo.logradouro + ', Bairro ' + conteudo.bairro);
+      document.getElementById('endereco').value = (conteudo.logradouro + ', Bairro ' + conteudo.bairro);
       document.getElementById('cidade').value = (conteudo.localidade);
       document.getElementById('estado').value = (conteudo.uf);
       
