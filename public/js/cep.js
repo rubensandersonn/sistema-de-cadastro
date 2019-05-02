@@ -10,7 +10,7 @@ function limpa_formulário_cep() {
   function meu_callback(conteudo) {
     if (!("erro" in conteudo)) {
       //Atualiza os campos com os valores.
-      document.getElementById('endereco').value = (conteudo.logradouro + ', ' + conteudo.bairro);
+      document.getElementById('endereco').value = ('Rua '+conteudo.logradouro + ', Bairro ' + conteudo.bairro);
       document.getElementById('cidade').value = (conteudo.localidade);
       document.getElementById('estado').value = (conteudo.uf);
       
@@ -27,7 +27,10 @@ function limpa_formulário_cep() {
     //Verifica se campo cep possui valor informado.
     if (cep != "") {
       //Expressão regular para validar o CEP.
-      var validacep = /^[0-9]{8}$/;
+      cep = cep.split('.').join("");
+      cep = cep.split('-').join("");
+      console.log(cep);
+      var validacep = /\d{8}$/;
       //Valida o formato do CEP.
       if (validacep.test(cep)) {
         //Preenche os campos com "..." enquanto consulta webservice.
@@ -44,7 +47,7 @@ function limpa_formulário_cep() {
       else {
         //cep é inválido.
         limpa_formulário_cep();
-        alert("Formato de CEP inválido.");
+        alert("CEP inválido.");
       }
     }
     else {

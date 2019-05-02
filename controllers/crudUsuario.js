@@ -62,10 +62,12 @@ exports.getDelete = (req, res) => {
  * Create a new local account.
  */
 exports.postCreate = (req, res, next) => {
-    req.assert('telefone', 'Desculpe, o formato do telefone é (dd) 9dddddddd ou (dd) dddddddd').matches(/^\(?\d{2}\)?[ ]?9\d{4} ?\d{4}$|^\(?\d{2}\)? ?\9 \d{4} ?\d{4}$/);
     req.assert('nascimento', 'Desculpe, o formato da data de nascimento é dd/mm/aaaa, antes de hoje e após 1900').matches(/^(0(?=\d)|1(?=\d)|2(?=\d)|3(?=[01]))\d\/(0(?=[1-9])|1(?=[0-2]))\d\/(19\d{2}|20(?=[01]\d)\d\d)$/);
     req.assert('rg', 'Desculpe, o formato do RG é dddddddddd-d').matches(/^\d{10}-\d$/);
+    req.assert('nome', 'Desculpe, o nome não pode conter dígitos').matches(/^[\c \D]*$/);
+    req.assert('telefone', 'Desculpe, o formato do telefone é (dd) 9dddddddd ou (dd) dddddddd').matches(/^\(?\d{2}\)?[ ]?9\d{4} ?\d{4}$|^\(?\d{2}\)? ?\9 \d{4} ?\d{4}$/);
     req.assert('cpf', 'Desculpe, o formato do CPF é ddd.ddd.ddd-dd ou ddddddddddd ou ddddddddd-dd').matches(/^(\d{11}|\d{9}-\d{2}|\d{3}\.\d{3}\.\d{3}-\d{2})$/);
+
 
     const errors = req.validationErrors();
 
@@ -74,32 +76,35 @@ exports.postCreate = (req, res, next) => {
         return res.redirect('create');
     }
 
+    var c = req.body.complemento ? '. Complemento: ' + req.body.complemento : '';
+
     const user = new Usuario({
         nome: req.body.nome.replace(/\b\w/g, l => l.toUpperCase()),
         tel: req.body.telefone,
         nascimento: req.body.nascimento,
         rg: req.body.rg,
         cpf: req.body.cpf,
-        endereco: req.body.endereco,
+        endereco: req.body.endereco + ' - no: ' + req.body.numero + c,
         cidade: req.body.cidade,
         estado: req.body.estado,
         cep: req.body.cep,
+
     });
 
-     Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
-         if (err) { return next(err); }
-         if (existingUser) {
-             req.flash('errors', { msg: 'Este usuário já existe.' });
-             return res.redirect('create');
+    Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
+        if (err) { return next(err); }
+        if (existingUser) {
+            req.flash('errors', { msg: 'Este usuário já existe.' });
+            return res.redirect('create');
+        }
+        user.save((err) => {
+            if (err) {
+                return next(err);
             }
-            user.save((err) => {
-                if (err) {
-                    return next(err);
-                }
-                req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
-                res.redirect('create');
-            });
+            req.flash('success', { msg: 'Usuário cadastrado com sucesso!' });
+            res.redirect('create');
         });
+    });
 };
 
 
@@ -109,6 +114,8 @@ exports.postCreate = (req, res, next) => {
  */
 exports.postUpdate = (req, res, next) => {
     req.assert('telefone', 'Desculpe, o formato do telefone é (dd) 9dddddddd ou (dd) dddddddd').matches(/^\(?\d{2}\)?[ ]?9\d{4} ?\d{4}$|^\(?\d{2}\)? ?\9 \d{4} ?\d{4}$/);
+    req.assert('cpf', 'Desculpe, o formato do CPF é ddd.ddd.ddd-dd ou ddddddddddd ou ddddddddd-dd').matches(/^(\d{11}|\d{9}-\d{2}|\d{3}\.\d{3}\.\d{3}-\d{2})$/);
+    req.assert('nome', 'Desculpe, o nome não pode conter dígitos').matches(/^[\c \D]*$/);
 
     const errors = req.validationErrors();
 
@@ -117,14 +124,17 @@ exports.postUpdate = (req, res, next) => {
         return res.redirect('update');
     }
 
+    var c = req.body.complemento ? '. Complemento: ' + req.body.complemento : '';
+
     Usuario.findOne({ cpf: req.body.cpf })
         .then(user => {
             user.tel = req.body.telefone || '';
             user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
-            user.endereco = req.body.endereco || '';
+            endereco: req.body.endereco + ' - no: ' + req.body.numero + c || '';
             user.cidade = req.body.cidade || '';
             user.estado = req.body.estado || '';
             user.cep = req.body.cep || '';
+
 
             user.save().then(u => {
                 req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
@@ -136,27 +146,7 @@ exports.postUpdate = (req, res, next) => {
             req.flash('errors', { msg: 'Usuário não encontrado.' });
             res.redirect('update');
         });
-    //Usuario.findById(req.user.id, (err, user) => {
-    /**
-     * 
-     Usuario.findOne({ cpf: req.body.cpf }, (err, user) => {
-         if (err) { return next(err); }
-         user.tel = req.body.telefone || '';
-         user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
-         user.endereco = req.body.endereco || '';
-         user.cidade = req.body.cidade || '';
-         user.estado = req.body.estado || '';
-         user.cep = req.body.cep || '';
-         
-         user.save((err) => {
-             if (err) {
-                 return next(err);
-                }
-                req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
-                res.redirect('update');
-            });
-        });
-    */
+    
 };
 
 /**
@@ -181,9 +171,13 @@ exports.postDelete = (req, res, next) => {
     */
 
     Usuario.deleteOne({ cpf: req.body.cpf }, (err) => {
-        if (err) { return next(err); }
+        if (err) {
+            req.flash('errors', err);
+            return res.redirect('delete');
+        }
         req.flash('info', { msg: 'Cadastro deletado.' });
         res.redirect('delete');
     });
+
 };
 

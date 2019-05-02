@@ -3,7 +3,9 @@
     a.navbar-brand(href='/')
       i.fas.fa-cube
       | Sistema de Cadastro
-    
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+      span.sr-only Toggle navigation
+      span.navbar-toggler-icon
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         li.nav-item(class=(title === 'Home') ? 'active' : undefined)
@@ -16,6 +18,7 @@
           a.nav-link(href='/usuario/update') Atualizar
         li.nav-item(class=(title === 'Remover') ? 'active' : undefined)
           a.nav-link(href='/usuario/delete') Remover
-        
+.pb-2.mt-2.mb-4.border-bottom
+    h3 |
       
         

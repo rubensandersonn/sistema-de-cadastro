@@ -1,8 +1,7 @@
 extends ../layout
 
 block content
-    .pb-2.mt-2.mb-4.border-bottom
-        h3 |
+    
     .pb-2.mb-4.mt-6.border-bottom
         h3.ml-5 Listando Pessoas
     form.ml-5(action='/usuario/read', method='GET').mb-4
@@ -29,6 +28,8 @@ block content
                     p="CPF: "+u.cpf
                     .col.mr-4.border-right
                     p="tel: "+u.tel
+                    .col.mr-4.border-right
+                    p="endereço: "+u.endereco
                     .col.mr-4.border-right
                     p="Cidade: "+u.cidade
                     .col.mr-4.border-right
