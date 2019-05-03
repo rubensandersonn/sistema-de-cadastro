@@ -37,6 +37,8 @@ const usuarioController = require('./controllers/crudUsuario');
  */
 const app = express();
 
+
+
 /** 
  * Connect to MongoDB. 
  */
@@ -104,8 +106,14 @@ app.post('/usuario/create', usuarioController.postCreate);
 app.get('/usuario/update', usuarioController.getUpdate);
 app.post('/usuario/update', usuarioController.postUpdate);
 
+app.get('/usuario/intupdate', usuarioController.getIntupdate);
+app.post('/usuario/intupdate', usuarioController.postIntupdate);
+
 app.get('/usuario/delete', usuarioController.getDelete);
 app.post('/usuario/delete', usuarioController.postDelete);
+
+app.get('/usuario/intdelete', usuarioController.getIntdelete);
+app.post('/usuario/intdelete', usuarioController.postIntdelete);
 
 
 /**

@@ -8,41 +8,49 @@ block content
     input(type='hidden', name='_csrf', value=_csrf)
     
     .form-group.row
-      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cpf') Digite o CPF da pessoa a ser atualizada
-      .col-md-7
-        input.mb-2.form-control(type='text', name='cpf', id='cpf', placeholder='000.000.000-00', autofocus, autocomplete='cpf', required)
-    .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='nome') Novo Nome
       .col-md-7
-        input.mb-2.form-control(type='text', name='nome', id='nome', placeholder='Nome', autofocus, autocomplete='telefone', required)
+        input.mb-2.form-control(type='text', name='nome', id='nome', value=usuarios.nome, placeholder='Nome', autofocus, autocomplete='telefone', required)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='telefone') Novo Telefone
       .col-md-7
-        input.mb-2.form-control(type='text', name='telefone', id='telefone', placeholder='(85) 999999999', autofocus, autocomplete='telefone', required)
+        input.mb-2.form-control(type='text', name='telefone',value=usuarios.tel, id='telefone', placeholder='(85) 999999999', autofocus, autocomplete='telefone', required)
       
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='nascimento') Data de Nascimento
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.nascimento, name='nascimento', id='nascimento', placeholder='01/01/2000', autofocus, autocomplete='nascimento', required)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='rg') RG
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.rg, name='rg', id='rg', placeholder='2007000000-0', autofocus, autocomplete='rg', required)
+      
+      
+        input.mb-2.form-control(type='hidden',value=usuarios.cpf, name='cpf', id='cpf', placeholder='ex: 000.000.000-00', autofocus, autocomplete='cpf', required)
+      
+
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='cep') CEP
       .col-md-7
-        input.mb-2.form-control(type='text', onblur='pesquisacep(this.value);', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='estado', required)
+        input.mb-2.form-control(type='text', value=usuarios.cep, onblur='pesquisacep(this.value);', name='cep', id='cep', placeholder='ex.: 60.000-000', autofocus, autocomplete='estado', required)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='endereco') Endereço
       .col-md-7
-        input.mb-2.form-control(type='text', name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', required, readonly)
+        input.mb-2.form-control(type='text', value=usuarios.endereco, name='endereco', id='endereco', placeholder='Endereço', autofocus, autocomplete='endereco', required, readonly)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='numero') Número
       .col-md-7
-        input.mb-2.form-control(type='text', name='numero', id='numero', placeholder='ex: 00', autofocus, autocomplete='numero', required)
+        input.mb-2.form-control(type='text', value=usuarios.numero,name='numero', id='numero', placeholder='ex: 00', autofocus, autocomplete='numero', required)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='complemento') Complemento
       .col-md-7
-        input.mb-2.form-control(type='text', name='complemento', id='complemento', placeholder='ex: bloco A, prédio tal', autofocus, autocomplete='complemento', required)
+        input.mb-2.form-control(type='text', value=usuarios.complemento, name='complemento', id='complemento', placeholder='ex: bloco A, prédio tal', autofocus, autocomplete='complemento')
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='cidade') Cidade
       .col-md-7
-        input.mb-2.form-control(type='text', name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='cidade', required, readonly)
+        input.mb-2.form-control(type='text', value=usuarios.cidade, name='cidade', id='cidade', placeholder='Cidade', autofocus, autocomplete='cidade', required, readonly)
       
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='estado') Estado
       .col-md-7
-        input.mb-2.form-control(type='text', name='estado', id='estado', placeholder='ex.: CE ou Ceará', autofocus, autocomplete='estado', required, readonly)
+        input.mb-2.form-control(type='text', value=usuarios.estado, name='estado', id='estado', placeholder='ex.: CE ou Ceará', autofocus, autocomplete='estado', required, readonly)
       
       
     
@@ -50,3 +58,5 @@ block content
       button.btn.btn-success(type='submit')
         i.fas.fa-user-plus.fa-sm
         | Atualizar
+  script. 
+    console.log(usuarios)

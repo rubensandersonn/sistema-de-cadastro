@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema({
     cidade:String,
     estado: String,
     cep: String,
+    complemento: String,
+    numero: String,
 }, { timestamps: true });
 
 /**

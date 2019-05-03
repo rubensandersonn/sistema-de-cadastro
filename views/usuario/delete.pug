@@ -4,17 +4,56 @@ block content
   
   .pb-2.mt-2.mb-4.border-bottom 
     h3.pl-4 Remover Cadastro
-
-  form.pl-4(action='/usuario/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
-    .form-group
-      .form-group.row
-        label.col-md-3.col-form-label.font-weight-bold.text-right(for='cpf') Digite o CPF da pessoa a ser removida
-        .col-md-7
-          input.form-control(type='text', name='cpf', id='cpf', placeholder='000.000.000-00', autofocus, autocomplete='cpf', required)
-      input(type='hidden', name='_csrf', value=_csrf)
-      .offset-sm-3.col-md-7.pl-2
-        button.btn.btn-danger(type='submit')
-          i.fas.fa-trash-alt.fa-sm
-          | Deletar Cadastro
-
   
+  form.pl-4(action='/usuario/delete', method='POST', onsubmit="return confirm('Are you sure you want to delete your account?');")
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group.row
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='nome') Nome
+      .col-md-7
+        input.mb-2.form-control(type='text', value=usuarios.nome, name='nome', id='nome', autofocus, autocomplete='nome',  readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='telefone') Telefone
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.tel, name='telefone', id='telefone', autofocus, autocomplete='telefone', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='nascimento') Data de Nascimento
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.nascimento, name='nascimento', id='nascimento', autofocus, autocomplete='nascimento', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='rg') RG
+      .col-md-7
+        input.mb-2.form-control(type='text', name='rg',value=usuarios.rg, id='rg', autofocus, autocomplete='rg', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cpf') CPF
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.cpf, name='cpf', id='cpf', autofocus, autocomplete='cpf', readonly)
+      
+
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cep') CEP
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.cep, name='cep', id='cep', autofocus, autocomplete='cep', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='endereco') Endereço
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.endereco, name='endereco', id='endereco', autofocus, autocomplete='endereco', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='numero') Número
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.numero, name='numero', id='numero', autofocus, autocomplete='numero', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='complemento') Complemento
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.complemento, name='complemento', id='complemento', autofocus, autocomplete='complemento', readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='estado') Estado
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.estado, name='estado', id='estado', autofocus, autocomplete='estado',  readonly)
+      
+      label.col-md-3.col-form-label.font-weight-bold.text-right(for='cidade') Cidade
+      .col-md-7
+        input.mb-2.form-control(type='text',value=usuarios.cidade, name='cidade', id='cidade', autofocus, autocomplete='cidade',  readonly)
+
+    .offset-sm-3.col-md-7.pl-2
+      button.btn.btn-danger(type='submit')
+        i.fas.fa-trash-alt.fa-sm
+        | Deletar Cadastro

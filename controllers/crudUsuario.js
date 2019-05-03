@@ -8,6 +8,24 @@ exports.getCreate = (req, res) => {
         title: 'Criar Usuario',
     });
 };
+/**
+ * GET /intupdate
+ * intupdate page.
+ */
+exports.getIntupdate = (req, res) => {
+    res.render('usuario/intupdate', {
+        title: 'Atualizar Usuario',
+    });
+};
+/**
+ * GET /intdelete
+ * intdelete page.
+ */
+exports.getIntdelete = (req, res) => {
+    res.render('usuario/intdelete', {
+        title: 'Deletar Usuario',
+    });
+};
 
 /**
  * GET /read
@@ -42,8 +60,10 @@ exports.getRead = (req, res) => {
  * Update page.
  */
 exports.getUpdate = (req, res) => {
+    //console.log(req.body.usuarios)
     res.render('usuario/update', {
-        title: 'Atualizar Pessoa'
+        title: 'Atualizar Pessoa',
+        usuarios: req.body.usuarios
     });
 };
 
@@ -53,7 +73,8 @@ exports.getUpdate = (req, res) => {
  */
 exports.getDelete = (req, res) => {
     res.render('usuario/delete', {
-        title: 'Deletar Usuário'
+        title: 'Deletar Usuário',
+        usuarios: req.body.usuarios
     });
 };
 
@@ -84,10 +105,12 @@ exports.postCreate = (req, res, next) => {
         nascimento: req.body.nascimento,
         rg: req.body.rg,
         cpf: req.body.cpf,
-        endereco: req.body.endereco + ' - no: ' + req.body.numero + c,
+        endereco: req.body.endereco,
         cidade: req.body.cidade,
         estado: req.body.estado,
         cep: req.body.cep,
+        numero: req.body.numero,
+        complemento: req.body.complemento,
 
     });
 
@@ -109,6 +132,44 @@ exports.postCreate = (req, res, next) => {
 
 
 /**
+ * POST /intupdate
+ * Read page.
+ */
+exports.postIntupdate = (req, res) => {
+
+    Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
+        if (err || !existingUser) {req.flash('errors', { msg: 'Pessoa não encontrada.' }); return res.redirect('intupdate') }
+        if (existingUser) {
+            console.log(existingUser, "postIntupdate");
+            res.render('usuario/update', {
+                title: 'Atualizar Usuário',
+                usuarios: existingUser
+            });
+        }
+    })
+    
+};
+
+/**
+ * POST /intdelete
+ * Read page.
+ */
+exports.postIntdelete = (req, res) => {
+    Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
+        if (err || !existingUser) {req.flash('errors', { msg: 'Pessoa não encontrada.' }); return res.render('usuario/intdelete') }
+        if (existingUser) {
+            console.log(existingUser, "postIntdelete");
+            res.render('usuario/delete', {
+                title: 'Deletar Usuário',
+                usuarios: existingUser
+            });
+        }
+    })
+};
+
+
+
+/**
  * POST /update
  * Update profile information.
  */
@@ -121,32 +182,35 @@ exports.postUpdate = (req, res, next) => {
 
     if (errors) {
         req.flash('errors', errors);
-        return res.redirect('update');
+        return res.redirect('intupdate');
     }
 
     var c = req.body.complemento ? '. Complemento: ' + req.body.complemento : '';
+    Usuario.findOne({ cpf: req.body.cpf }, (err, existingUser) => {
+        console.log(existingUser)
+        if (err || !existingUser) {req.flash('errors', { msg: 'Pessoa não encontrada.' }); return res.render('usuario/intupdate') }
+            existingUser.tel = req.body.telefone || '';
+            existingUser.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
+            existingUser.endereco = req.body.endereco|| '';
+            existingUser.cidade = req.body.cidade || '';
+            existingUser.estado = req.body.estado || '';
+            existingUser.nascimento = req.body.nascimento || '';
+            existingUser.cep = req.body.cep || '';
+            existingUser.complemento = req.body.complemento || '';
+            existingUser.numero = req.body.numero || '';
+            existingUser.rg = req.body.rg || '';
 
-    Usuario.findOne({ cpf: req.body.cpf })
-        .then(user => {
-            user.tel = req.body.telefone || '';
-            user.nome = req.body.nome.replace(/\b\w/g, l => l.toUpperCase()) || '';
-            user.endereco = req.body.endereco + ' - no: ' + req.body.numero + c || '';
-            user.cidade = req.body.cidade || '';
-            user.estado = req.body.estado || '';
-            user.cep = req.body.cep || '';
 
-
-            user.save().then(u => {
+            existingUser.save().then(u => {
                 req.flash('success', { msg: 'Usuário atualizado com sucesso.' });
-                res.redirect('update');
+                res.redirect('intupdate');
             }).catch(err => {
-                return next(err);
+                req.flash('errors', { msg: 'Erro ao atualizar.' });
+                res.redirect('intupdate');
             });
-        }).catch(err => {
-            req.flash('errors', { msg: 'Usuário não encontrado.' });
-            res.redirect('update');
-        });
+    });
     
+
 };
 
 /**
@@ -160,7 +224,7 @@ exports.postDelete = (req, res, next) => {
 
     if (errors) {
         req.flash('errors', errors);
-        return res.redirect('delete');
+        return res.redirect('intdelete');
     }
     /**
      Usuario.deleteOne({ cpf: req.body.cpf }, (err) => {
@@ -173,10 +237,10 @@ exports.postDelete = (req, res, next) => {
     Usuario.deleteOne({ cpf: req.body.cpf }, (err) => {
         if (err) {
             req.flash('errors', err);
-            return res.redirect('delete');
+            return res.redirect('intdelete');
         }
         req.flash('info', { msg: 'Cadastro deletado.' });
-        res.redirect('delete');
+        res.redirect('intdelete');
     });
 
 };
